@@ -2,9 +2,6 @@ import firebase from "firebase/compat/app"; // firebase SDK
 import "firebase/compat/firestore";
 import "firebase/compat/auth";
 
-import { useAuthState } from "react-firebase-hooks/auth"; // firebase hooks
-import { useCollectionData } from "react-firebase-hooks/firestore";
-
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyA0N0XBMF3W2NYCc_Ntf0wCuoEZemdo3IQ",
