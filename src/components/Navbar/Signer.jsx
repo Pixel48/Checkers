@@ -1,5 +1,5 @@
 import firebase from "firebase/compat/app"; // firebase SDK
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 
 const signerButtonClasses = "btn btn-primary btn-lg btn-block m-2 p-20";
 

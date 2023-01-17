@@ -2,7 +2,7 @@ import { auth } from "./firebase";
 import Navbar from "./components/Navbar";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   const [user] = useAuthState(auth);
@@ -21,7 +21,8 @@ function App() {
           {/* route to user stats under /user/:id. If !user, then redirect to / */}
           <Route
             path="/user/:id"
-            element={user ? <h1>User stats</h1> : <h1>Spectator</h1> }
+            element={user ? <h1>User stats</h1> : <h1>Spectator</h1>}
+          />
         </Routes>
       </main>
     </>
