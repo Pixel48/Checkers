@@ -4,13 +4,12 @@ import "firebase/compat/auth";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyA0N0XBMF3W2NYCc_Ntf0wCuoEZemdo3IQ",
-  authDomain: "checkers-20bd9.firebaseapp.com",
-  projectId: "checkers-20bd9",
-  storageBucket: "checkers-20bd9.appspot.com",
-  messagingSenderId: "640056595469",
-  appId: "1:640056595469:web:0daacdf822dae1243b7144",
-  measurementId: "G-C9EKYW5N9L",
+  apiKey: "AIzaSyC5eUyyVknW-yNg0H215t0-tcwu8TAiTcA",
+  authDomain: "checkers-e0929.firebaseapp.com",
+  projectId: "checkers-e0929",
+  storageBucket: "checkers-e0929.appspot.com",
+  messagingSenderId: "55899113994",
+  appId: "1:55899113994:web:84a2c21182e8af84652df3",
 };
 
 firebase.initializeApp(firebaseConfig);
