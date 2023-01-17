@@ -1,7 +1,26 @@
-import "./App.css";
+import { auth } from "./firebase";
+import Navbar from "./components/Navbar";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Link, Routes, Route } from "react-router-dom";
 
 function App() {
-  return <div className="App">Hello World!</div>;
+  const [user] = useAuthState(auth);
+
+  return (
+    <>
+      <Navbar user={user} />
+
+      <main className="container">
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={user ? <h1>Dashboard</h1> : <h1>Spectator</h1>}
+          />
+        </Routes>
+      </main>
+    </>
+  );
 }
 
 export default App;
