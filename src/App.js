@@ -18,6 +18,10 @@ function App() {
             path="/"
             element={user ? <Dashboard /> : <h1>Spectator</h1>}
           />
+          {/* route to user stats under /user/:id. If !user, then redirect to / */}
+          <Route
+            path="/user/:id"
+            element={user ? <h1>User stats</h1> : <h1>Spectator</h1> }
         </Routes>
       </main>
     </>
