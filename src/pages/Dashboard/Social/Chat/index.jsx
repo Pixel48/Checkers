@@ -42,12 +42,12 @@ const Chat = () => {
         <input
           type="text"
           value={formValue}
+          placeholder="Say something nice"
           onChange={(e) => setFormValue(e.target.value)}
         />
-        <button type="submit" placeholder="Say something">
-          Send
-        </button>
+        <button type="submit">Send</button>
       </form>
+      <div ref={dummy}></div>
     </>
   );
 };
