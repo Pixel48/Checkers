@@ -1,0 +1,156 @@
+body {
+  background-color: #282c34;
+}
+
+.App {
+  margin: 0 auto;
+  max-width: 728px;
+  text-align: center;
+}
+
+.App header {
+  padding: 10px;
+  display: flex;
+  position: fixed;
+  justify-content: space-between;
+  align-items: center;
+  top: 0;
+  width: 100%;
+  max-width: 728px;
+  height: 10vh;
+  min-height: 50px;
+  box-sizing: border-box;
+  z-index: 99;
+  color: white;
+  background-color: #181717;
+}
+
+.App section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: rgb(40, 37, 53);
+}
+
+main {
+  margin: 10vh 0 10vh;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  /* overflow-y: scroll; */
+}
+
+main::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+main::-webkit-scrollbar-track {
+  background: #1e1e24;
+}
+
+main::-webkit-scrollbar-thumb {
+  background: #6649b8;
+}
+
+.chat {
+  height: 50vh;
+  overflow-y: scroll;
+}
+
+.chat form {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 728px;
+  height: 10vh;
+  font-size: 1.5rem;
+  background-color: rgb(24, 23, 23);
+}
+
+form button {
+  width: 20%;
+  background-color: rgb(56, 56, 143);
+}
+
+input {
+  padding: 0 10px;
+  width: 100%;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  outline: none;
+  background: rgb(58, 58, 58);
+}
+
+button {
+  padding: 15px 32px;
+  display: inline-block;
+  /* Green */
+  border: none;
+  color: white;
+  font-size: 1.25rem;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: #282c34;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sign-in {
+  margin: 0 auto;
+  max-width: 400px;
+  color: #282c34;
+  background: white;
+}
+
+ul,
+li {
+  text-align: left;
+  list-style: none;
+}
+
+p {
+  margin-bottom: 12px;
+  padding: 10px 20px;
+  position: relative;
+  max-width: 500px;
+  border-radius: 25px;
+  color: white;
+  text-align: center;
+  line-height: 24px;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+}
+
+.sent {
+  flex-direction: row-reverse;
+}
+
+.sent p {
+  align-self: flex-end;
+  color: white;
+  background: #0b93f6;
+}
+
+.received p {
+  color: black;
+  background: #e5e5ea;
+}
+
+img {
+  margin: 2px 5px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}

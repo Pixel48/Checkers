@@ -16,6 +16,7 @@ const Chat = () => {
 
   const sendMessage = async (e) => {
     e.preventDefault();
+    if (!formValue) return;
 
     const { uid, photoURL } = auth.currentUser;
 
@@ -33,11 +34,11 @@ const Chat = () => {
 
   return (
     <>
-      <main>
+      <div className="chat">
         {messages &&
           messages.map((msg) => <Message key={msg.id} message={msg} />)}
         <div ref={dummy}></div>
-      </main>
+      </div>
       <form onSubmit={sendMessage}>
         <input
           type="text"
@@ -47,7 +48,6 @@ const Chat = () => {
         />
         <button type="submit">Send</button>
       </form>
-      <div ref={dummy}></div>
     </>
   );
 };
