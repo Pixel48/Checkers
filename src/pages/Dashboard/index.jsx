@@ -1,3 +1,5 @@
+import Social from "./Social";
+
 const Dashboard = (props) => {
   return (
     <div className="row" style={{ margin: "1em 0" }}>
@@ -12,29 +14,7 @@ const Dashboard = (props) => {
         }}>
         <h1>Board</h1>
       </div>
-      <div className="col-6 right" id="social" style={{ display: "" }}>
-        <div className="person">
-          <span
-            className="profile-pic"
-            style={{
-              backgroundColor: "blue",
-              aspectRatio: "1:1",
-              display: "inline-block",
-              width: "7vw",
-              height: "7vw",
-              borderRadius: "50%",
-            }}></span>
-          <h1 style={{ display: "inline" }}>Social</h1>
-        </div>
-        <div
-          id="chat"
-          style={{
-            backgroundColor: "pink",
-            width: "29vw",
-            height: "25vw",
-            display: "block",
-          }}></div>
-      </div>
+      <Social />
     </div>
   );
 };
