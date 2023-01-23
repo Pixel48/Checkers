@@ -1,10 +1,10 @@
 import Chat from "./Chat";
-import Profile from "./Profile";
+import User from "./User";
 
 const Social = () => {
   return (
     <div className="col-6 right" id="social">
-      <Profile />
+      <User />
       <Chat style={{ width: "25em" }} />
     </div>
   );

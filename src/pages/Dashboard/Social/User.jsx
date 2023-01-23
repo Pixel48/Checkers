@@ -1,4 +1,4 @@
-const Profile = () => {
+const User = () => {
   return (
     <div className="person">
       <span
@@ -16,4 +16,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default User;
