@@ -1,12 +1,10 @@
-import { auth } from "./firebase";
+import { auth, db } from "./firebase";
 import Navbar from "./components/Navbar";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Redirect from "./components/Redirect";
 import Profile from "./pages/Proflie";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { firestore } from "./firebase";
 
 import "./App.css";
 

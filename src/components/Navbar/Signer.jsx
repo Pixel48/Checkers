@@ -1,12 +1,14 @@
-import firebase from "firebase/compat/app"; // firebase SDK
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase";
+
+const googleAuthProvider = new GoogleAuthProvider();
 
 const signerButtonClasses = "btn btn-primary btn-lg btn-block m-2 p-20";
 
 const SignIn = () => {
   const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider);
   };
 
   return (

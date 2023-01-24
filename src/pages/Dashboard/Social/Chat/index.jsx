@@ -1,14 +1,22 @@
-import { auth, firestore } from "../../../../firebase";
-import firebase from "firebase/compat/app";
+import { auth, db } from "../../../../firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import {
+  addDoc,
+  collection,
+  limit,
+  orderBy,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
 import { useRef, useState } from "react";
 import Message from "./Message";
 
 const Chat = () => {
-  const messagesRef = firestore.collection("messages");
-  const query = messagesRef.orderBy("createdAt").limit(25);
+  const messagesRef = collection(db, "messages");
+  // const q = messagesRef.orderBy("createdAt").limit(25);
+  const q = query(messagesRef, orderBy("createdAt"), limit(25));
 
-  const [messages] = useCollectionData(query, { idField: "id" });
+  const [messages] = useCollectionData(q, { idField: "id" });
 
   const [formValue, setFormValue] = useState("");
 
@@ -20,9 +28,15 @@ const Chat = () => {
 
     const { uid, photoURL } = auth.currentUser;
 
-    await messagesRef.add({
+    // await messagesRef.add({
+    //   text: formValue,
+    //   createdAt: serverTimestamp(),
+    //   uid,
+    //   photoURL,
+    // });
+    addDoc(messagesRef, {
       text: formValue,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: serverTimestamp(),
       uid,
       photoURL,
     });
