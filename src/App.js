@@ -1,7 +1,7 @@
 import { auth } from "./firebase";
 import Navbar from "./components/Navbar";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Redirect from "./components/Redirect";
 import Profile from "./pages/Proflie";
@@ -20,11 +20,17 @@ function App() {
           <Route path="/" element={<Redirect to="/game" />} />
           <Route path="/game">
             <Route index element={<Dashboard newGame />} />
-            <Route path=":gameID" element={<Dashboard />} />
+            <Route path=":gameid" element={<Dashboard />} />
           </Route>
           <Route path="/user">
-            <Route index element={<Redirect to={`/user/${user?.uid}`} />} />
-            <Route path=":userID" element={<Profile />} />
+            {/* <Route index element={<Profile />} /> */}
+            <Route
+              index
+              element={
+                <Navigate replace to={user ? `/user/${user?.uid}` : "/game"} />
+              }
+            />
+            <Route path=":userid" element={<Profile />} />
           </Route>
         </Routes>
       </main>

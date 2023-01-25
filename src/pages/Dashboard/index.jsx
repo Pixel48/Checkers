@@ -6,7 +6,7 @@ import Social from "./Social";
 const Dashboard = (props) => {
   const { user } = UserAuth();
   const { newGame } = props;
-  const { gameID } = useParams();
+  const { gameid } = useParams();
 
   return (
     <div className="row" style={{ margin: "1em 0" }}>
