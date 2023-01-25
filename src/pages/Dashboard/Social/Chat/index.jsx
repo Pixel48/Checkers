@@ -39,11 +39,10 @@ const Chat = () => {
       createdAt: serverTimestamp(),
       uid,
       photoURL,
+    }).then(() => {
+      setFormValue("");
+      dummy.current.scrollIntoView({ behavior: "smooth" });
     });
-
-    setFormValue("");
-
-    dummy.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
