@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
 
 const SBoard = (props) => {
-  const { gameID } = useParams();
+  const { gameid } = useParams();
 
   return (
-    <div className="col-6 right" id="game" gameID={gameID}>
-      Spectator Board (SBoard) - {gameID}
+    <div className="col-6 right" id="game" gameid={gameid}>
+      Spectator Board (SBoard) - {gameid}
     </div>
   );
 };

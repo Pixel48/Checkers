@@ -1,35 +1,51 @@
-import { auth, firestore } from "../../../../firebase";
-import firebase from "firebase/compat/app";
+import { db } from "../../../../firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import {
+  addDoc,
+  collection,
+  limit,
+  orderBy,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
 import { useRef, useState } from "react";
 import Message from "./Message";
+import { UserAuth } from "../../../../context/AuthContext";
 
 const Chat = () => {
-  const messagesRef = firestore.collection("messages");
-  const query = messagesRef.orderBy("createdAt").limit(25);
+  const messagesRef = collection(db, "messages");
+  // const q = messagesRef.orderBy("createdAt").limit(25);
+  const q = query(messagesRef, orderBy("createdAt"), limit(1024));
 
-  const [messages] = useCollectionData(query, { idField: "id" });
+  const [messages] = useCollectionData(q, { idField: "id" });
 
   const [formValue, setFormValue] = useState("");
 
   const dummy = useRef();
 
+  const { user } = UserAuth();
+
   const sendMessage = async (e) => {
     e.preventDefault();
     if (!formValue) return;
 
-    const { uid, photoURL } = auth.currentUser;
+    const { uid, photoURL } = user;
 
-    await messagesRef.add({
+    // await messagesRef.add({
+    //   text: formValue,
+    //   createdAt: serverTimestamp(),
+    //   uid,
+    //   photoURL,
+    // });
+    addDoc(messagesRef, {
       text: formValue,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: serverTimestamp(),
       uid,
       photoURL,
+    }).then(() => {
+      setFormValue("");
+      dummy.current.scrollIntoView({ behavior: "smooth" });
     });
-
-    setFormValue("");
-
-    dummy.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (

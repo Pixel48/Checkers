@@ -1,9 +1,10 @@
-import { auth } from "../../../../firebase";
+import { UserAuth } from "../../../../context/AuthContext";
 
 const Message = (props) => {
   const { text, uid, photoURL } = props.message;
 
-  const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
+  const { user } = UserAuth();
+  const messageClass = uid === user.uid ? "sent" : "received";
 
   return (
     <div className={`message ${messageClass}`}>
