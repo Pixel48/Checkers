@@ -27,6 +27,30 @@ export const AuthContext = ({ children }) => {
     return unsub;
   }, []);
 
+  const updateUser = async (user) => {
+    console.debug(`updateUser(${user.uid})`);
+    const userRef = doc(db, "users", user.uid);
+    getDoc(userRef).then((userDoc) => {
+      if (!userDoc.exists()) {
+        console.log(`Creating ${user.displayName}'s profile...`);
+        setDoc(userRef, {
+          uid: user.uid,
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          createdAt: serverTimestamp(),
+          seenAt: serverTimestamp(),
+          win: 0,
+          lose: 0,
+          draw: 0,
+        });
+      } else {
+        console.log(`Updating ${user.displayName}'s profile...`);
+        updateDoc(userRef, { seenAt: serverTimestamp() });
+      }
+    });
+  };
+
   const login = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
@@ -34,7 +58,7 @@ export const AuthContext = ({ children }) => {
         const cred = GoogleAuthProvider.credentialFromResult(result);
         const token = cred.accessToken;
         const user = result.user;
-        // updateUser(user);
+        updateUser(user);
       })
       .catch((error) => {
         const errorCode = error.code;
