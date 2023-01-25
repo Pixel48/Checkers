@@ -1,31 +1,29 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../firebase";
-
-const googleAuthProvider = new GoogleAuthProvider();
+import { UserAuth } from "../../context/AuthContext";
 
 const signerButtonClasses = "btn btn-primary btn-lg btn-block m-2 p-20";
 
+// const { user } = UserAuth();
+
 const SignIn = () => {
-  const signInWithGoogle = () => {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider);
-  };
+  const { login } = UserAuth();
+  // const signInWithGoogle = () => {
+  //   const provider = new GoogleAuthProvider();
+  //   signInWithPopup(auth, provider);
+  // };
 
   return (
-    <button
-      className={signerButtonClasses + " green"}
-      onClick={signInWithGoogle}>
+    <button className={signerButtonClasses + " green"} onClick={() => login()}>
       Sign in with Google
     </button>
   );
 };
 
 const SignOut = () => {
+  const { user, logout } = UserAuth();
+
   return (
-    auth.currentUser && (
-      <button
-        className={signerButtonClasses + " red"}
-        onClick={() => auth.signOut()}>
+    user && (
+      <button className={signerButtonClasses + " red"} onClick={() => logout()}>
         Sign Out
       </button>
     )
@@ -33,7 +31,8 @@ const SignOut = () => {
 };
 
 const Signer = (props) => {
-  const user = props?.user ? props.user : null;
+  // const user = props?.user ? props.user : null;
+  const { user } = UserAuth();
 
   return <>{user ? <SignOut /> : <SignIn />}</>;
 };

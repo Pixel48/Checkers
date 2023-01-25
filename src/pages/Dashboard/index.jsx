@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
+import { UserAuth } from "../../context/AuthContext";
 import SBoard from "./SBoard";
 import Social from "./Social";
 
 const Dashboard = (props) => {
-  const { user } = props;
+  const { user } = UserAuth();
   const { newGame } = props;
   const { gameID } = useParams();
 

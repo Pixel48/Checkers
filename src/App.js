@@ -13,18 +13,18 @@ function App() {
 
   return (
     <>
-      <Navbar user={user} />
+      <Navbar />
 
       <main className="container">
         <Routes>
           <Route path="/" element={<Redirect to="/game" />} />
           <Route path="/game">
-            <Route index element={<Dashboard user={user} newGame />} />
-            <Route path=":gameID" element={<Dashboard user={user} />} />
+            <Route index element={<Dashboard newGame />} />
+            <Route path=":gameID" element={<Dashboard />} />
           </Route>
           <Route path="/user">
             <Route index element={<Redirect to={`/user/${user?.uid}`} />} />
-            <Route path=":userID" element={<Profile user={user} />} />
+            <Route path=":userID" element={<Profile />} />
           </Route>
         </Routes>
       </main>
