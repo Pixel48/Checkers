@@ -1,12 +1,31 @@
 import { createContext, useState } from "react";
-import { auth } from "../firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth, db } from "../firebase";
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+} from "firebase/auth";
 import { useContext } from "react";
+import {
+  doc,
+  getDoc,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "@firebase/firestore";
+import { useEffect } from "react";
 
 const UserContext = createContext();
 
 export const AuthContext = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(auth.currentUser);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (currUser) => {
+      setUser(currUser);
+    });
+    return unsub;
+  }, []);
 
   const login = () => {
     const provider = new GoogleAuthProvider();
@@ -15,9 +34,7 @@ export const AuthContext = ({ children }) => {
         const cred = GoogleAuthProvider.credentialFromResult(result);
         const token = cred.accessToken;
         const user = result.user;
-        setUser(user);
-        // console.log(`user: ${user}`);
-        console.dir(user);
+        // updateUser(user);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -30,13 +47,12 @@ export const AuthContext = ({ children }) => {
 
   const logout = () => {
     auth.signOut();
-    setUser(null);
     // navigate("/");
   };
 
   return (
     // prettier-ignore
-    <UserContext.Provider value={{login, user, logout}}>
+    <UserContext.Provider value={{user, login, logout}}>
       {children}
     </UserContext.Provider>
   );
