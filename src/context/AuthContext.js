@@ -17,14 +17,14 @@ export const AuthContext = ({ children }) => {
         const user = result.user;
         setUser(user);
         // console.log(`user: ${user}`);
-        console.log(user);
+        console.dir(user);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         const email = error.customData.email;
         const cred = GoogleAuthProvider.credentialFromError(error);
-        console.error();
+        console.error({ errorCode, errorMessage, email, cred });
       });
   };
 

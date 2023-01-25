@@ -1,4 +1,4 @@
-import { auth, db } from "./firebase";
+import { auth } from "./firebase";
 import Navbar from "./components/Navbar";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Routes, Route } from "react-router-dom";
