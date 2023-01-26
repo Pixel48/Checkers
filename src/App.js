@@ -17,7 +17,7 @@ function App() {
 
       <main className="container">
         <Routes>
-          <Route path="/" element={<Redirect to="/game" />} />
+          <Route path="/" element={<Navigate replace to="/game" />} />
           <Route path="/game">
             <Route index element={<Dashboard newGame />} />
             <Route path=":gameid" element={<Dashboard />} />
