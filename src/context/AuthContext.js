@@ -43,6 +43,7 @@ export const AuthContext = ({ children }) => {
           win: 0,
           lose: 0,
           draw: 0,
+          games: [],
         });
       } else {
         console.log(`Updating ${user.displayName}'s profile...`);
