@@ -10,7 +10,6 @@ const Profile = () => {
 
   const userRef = doc(db, "users", userid);
   console.log({ userRef });
-  // const userDoc = getDoc(userRef);
   const [userDoc, loading, error] = useDocumentData(userRef);
   console.log({ userDoc });
 
@@ -38,8 +37,12 @@ const Profile = () => {
             height: "auto",
           }}
         />
+
         <p>{userDoc.displayName}</p>
-        <p>uid {userDoc.uid}</p>
+        <p>uid: {userDoc.uid}</p>
+        <p>joined at {userDoc.createdAt.toDate().toString()}</p>
+        <p>last seen at {userDoc.seenAt.toDate().toString()}</p>
+        <p>W / L / D: {`${userDoc.win} / ${userDoc.lose} / ${userDoc.draw}`}</p>
       </div>
     </div>
   );
