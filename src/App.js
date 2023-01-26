@@ -4,7 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Redirect from "./components/Redirect";
-import Profile from "./pages/Proflie";
+import Profile from "./pages/Profile";
 
 import "./App.css";
 
