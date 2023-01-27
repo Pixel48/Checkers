@@ -11,13 +11,15 @@ import {
 import { useRef, useState } from "react";
 import Message from "./Message";
 import { UserAuth } from "../../../../context/AuthContext";
+import { useParams } from "react-router-dom";
 
 const Chat = () => {
-  const messagesRef = collection(db, "messages");
+  const { gameid } = useParams();
+  const messagesRef = collection(db, `games/${gameid}/chat`);
   // const q = messagesRef.orderBy("createdAt").limit(25);
   const q = query(messagesRef, orderBy("createdAt"), limit(1024));
 
-  const [messages] = useCollectionData(q, { idField: "id" });
+  const [messages] = useCollectionData(q);
 
   const [formValue, setFormValue] = useState("");
 

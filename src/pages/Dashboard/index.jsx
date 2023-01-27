@@ -1,5 +1,7 @@
-import { useParams } from "react-router-dom";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { useNavigate, useParams } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
+import { db } from "../../firebase";
 import SBoard from "./SBoard";
 import Social from "./Social";
 
@@ -7,6 +9,22 @@ const Dashboard = (props) => {
   const { user } = UserAuth();
   const { newGame } = props;
   const { gameid } = useParams();
+  const navigate = useNavigate();
+
+  const createGame = async () => {
+    console.log(`Creating game for ${user.displayName}...`);
+    const myNewGame = await addDoc(collection(db, "games"), {
+      // players: [null, user.uid], // first is always opponent, plays as white
+      creator: user.uid, // creator plays as black
+      opponent: null,
+      turn: 0, // 0 - opponent, 1 - creator (used as winner if game ends)
+      boards: [],
+      createdAt: serverTimestamp(),
+      ongoing: true,
+    });
+    console.log(myNewGame.id);
+    navigate(`/game/${myNewGame.id}`);
+  };
 
   return (
     <div className="row" style={{ margin: "1em 0" }}>
@@ -23,7 +41,11 @@ const Dashboard = (props) => {
             }}>
             <h1>Board</h1>
           </div>
-          {newGame ? <h1>NewGameButton</h1> : <Social />}
+          {newGame ? (
+            <button onClick={createGame}>Find Game</button>
+          ) : (
+            <Social gameid={gameid} />
+          )}
         </>
       ) : (
         // logged out
