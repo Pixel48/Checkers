@@ -1,4 +1,13 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  serverTimestamp,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import { db } from "../../firebase";
@@ -16,14 +25,38 @@ const Dashboard = (props) => {
     const myNewGame = await addDoc(collection(db, "games"), {
       // players: [null, user.uid], // first is always opponent, plays as white
       creator: user.uid, // creator plays as black
-      opponent: null,
+      opponent: null, // if null, game is waiting for opponent
       turn: 0, // 0 - opponent, 1 - creator (used as winner if game ends)
-      boards: [],
+      boards: [], // array of board states in JSON format
       createdAt: serverTimestamp(),
-      ongoing: true,
+      ongoing: true, // if false, game is over (turn indicates winner (0 - opponent, 1 - creator))
     });
     console.log(myNewGame.id);
     navigate(`/game/${myNewGame.id}`);
+  };
+
+  const findGame = async () => {
+    console.log(`Finding game for ${user.displayName}...`);
+    const waitingGamesQuery = query(
+      collection(db, "games"),
+      where("opponent", "==", null),
+      where("creator", "!=", user.uid),
+      orderBy("creator"),
+      orderBy("createdAt")
+    );
+
+    const waitingGames = await getDocs(waitingGamesQuery);
+    if (waitingGames.size > 0) {
+      const game = waitingGames.docs[0];
+      const gameData = game.data();
+      const gameID = game.id;
+      console.log(`Found game ${gameID}`);
+      updateDoc(game.ref, { opponent: user.uid });
+      navigate(`/game/${gameID}`);
+    } else {
+      console.log("No waiting games found");
+      createGame();
+    }
   };
 
   return (
@@ -42,7 +75,7 @@ const Dashboard = (props) => {
             <h1>Board</h1>
           </div>
           {newGame ? (
-            <button onClick={createGame}>Find Game</button>
+            <button onClick={findGame}>Find Game</button>
           ) : (
             <Social gameid={gameid} />
           )}
