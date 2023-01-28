@@ -8,7 +8,7 @@ const Message = (props) => {
 
   return (
     <div className={`message ${messageClass}`}>
-      <img src={photoURL} alt="" />
+      <img src={photoURL} alt="" referrerPolicy="no-referrer" />
       <p>{text}</p>
     </div>
   );
