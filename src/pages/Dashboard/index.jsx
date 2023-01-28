@@ -2,6 +2,7 @@ import {
   addDoc,
   collection,
   getDocs,
+  limit,
   orderBy,
   query,
   serverTimestamp,
@@ -59,6 +60,44 @@ const Dashboard = (props) => {
     }
   };
 
+  const checkOngoing = async () => {
+    if (user === {}) return;
+    console.log(`Checking for ${user.displayName}'s ongoing games...`);
+    const createdGamesQuery = query(
+      collection(db, "games"),
+      where("creator", "==", user.uid),
+      where("ongoing", "==", true),
+
+      // orderBy("createdAt"),
+      limit(1)
+    );
+    const createdGames = await getDocs(createdGamesQuery);
+    if (createdGames.size > 0) {
+      const game = createdGames.docs[0];
+      const gameID = game.id;
+      console.log(`Found ongoing game ${gameID}`);
+      navigate(`/game/${gameID}`);
+      return;
+    } else console.log("No created games found");
+    console.log(`Checking for ${user.displayName}'s opponent games...`);
+    const opponentGamesQuery = query(
+      collection(db, "games"),
+      where("opponent", "==", user.uid),
+      where("ongoing", "==", true),
+      // orderBy("createdAt"),
+      limit(1)
+    );
+    const opponentGames = await getDocs(opponentGamesQuery);
+    if (opponentGames.size > 0) {
+      const game = opponentGames.docs[0];
+      const gameID = game.id;
+      console.log(`Found ongoing game ${gameID} as opponent`);
+      navigate(`/game/${gameID}`);
+      return;
+    } else console.log("No opponent games found");
+    findGame();
+  };
+
   return (
     <div className="row" style={{ margin: "1em 0" }}>
       {user ? ( // logged in
@@ -75,7 +114,7 @@ const Dashboard = (props) => {
             <h1>Board</h1>
           </div>
           {newGame ? (
-            <button onClick={findGame}>Find Game</button>
+            <button onClick={checkOngoing}>Find Game</button>
           ) : (
             <Social gameid={gameid} />
           )}
