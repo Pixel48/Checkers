@@ -7,6 +7,7 @@ import Redirect from "./components/Redirect";
 import Profile from "./pages/Proflie";
 
 import "./App.css";
+import Spectator from "./Spectator";
 
 function App() {
   const [user] = useAuthState(auth);
@@ -17,10 +18,17 @@ function App() {
 
       <main className="container">
         <Routes>
-          <Route path="/" element={<Redirect to="/game" />} />
+          <Route
+            path="/"
+            element={<Redirect to={user ? "/game" : "/spectator"} />}
+          />
           <Route path="/game">
-            <Route index element={<Dashboard newGame />} />
+            <Route index element={<Dashboard />} />
             <Route path=":gameid" element={<Dashboard />} />
+          </Route>
+          <Route path="/spectator">
+            <Route index element={<Spectator />} />
+            <Route path=":gameid" element={<Spectator />} />
           </Route>
           <Route path="/user">
             {/* <Route index element={<Profile />} /> */}

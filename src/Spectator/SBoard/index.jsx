@@ -5,7 +5,7 @@ const SBoard = (props) => {
 
   return (
     <div className="col-6 right" id="game" gameid={gameid}>
-      Spectator Board (SBoard) - {gameid}
+      Spectator Board (SBoard){gameid ? ` - ${gameid}` : ""}
     </div>
   );
 };

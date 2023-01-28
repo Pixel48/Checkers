@@ -12,7 +12,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import { db } from "../../firebase";
-import SBoard from "./SBoard";
+import SBoard from "../../Spectator/SBoard";
 import Social from "./Social";
 
 const Dashboard = (props) => {
@@ -100,34 +100,24 @@ const Dashboard = (props) => {
 
   return (
     <div className="row" style={{ margin: "1em 0" }}>
-      {user ? ( // logged in
-        <>
-          <div
-            className="col-6 left"
-            id="board"
-            style={{
-              backgroundColor: "red",
-              aspectRatio: "1:1",
-              width: "30vw",
-              height: "30vw",
-            }}>
-            <h1>Board</h1>
-          </div>
-          {newGame ? (
-            <button onClick={checkOngoing}>Find Game</button>
-          ) : (
-            <Social gameid={gameid} />
-          )}
-        </>
-      ) : (
-        // logged out
-        <>
-          <div className="col-6 left" id="gameList">
-            GameList
-          </div>
-          <SBoard />
-        </>
-      )}
+      <>
+        <div
+          className="col-6 left"
+          id="board"
+          style={{
+            backgroundColor: "red",
+            aspectRatio: "1:1",
+            width: "30vw",
+            height: "30vw",
+          }}>
+          <h1>Board</h1>
+        </div>
+        {!gameid ? (
+          <button onClick={checkOngoing}>Find Game</button>
+        ) : (
+          <Social gameid={gameid} />
+        )}
+      </>
     </div>
   );
 };
