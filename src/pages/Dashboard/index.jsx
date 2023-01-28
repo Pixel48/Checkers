@@ -9,17 +9,20 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import { db } from "../../firebase";
-import SBoard from "../../Spectator/SBoard";
 import Social from "./Social";
 
 const Dashboard = (props) => {
   const { user } = UserAuth();
-  const { newGame } = props;
   const { gameid } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) navigate(gameid ? `/spectator/${gameid}` : `/spectator`);
+  }, []);
 
   const createGame = async () => {
     console.log(`Creating game for ${user.displayName}...`);
