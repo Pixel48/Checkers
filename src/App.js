@@ -4,7 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Redirect from "./components/Redirect";
-import Profile from "./pages/Proflie";
+import Profile from "./pages/Profile";
 
 import "./App.css";
 import Spectator from "./Spectator";
@@ -18,10 +18,7 @@ function App() {
 
       <main className="container">
         <Routes>
-          <Route
-            path="/"
-            element={<Redirect to={user ? "/game" : "/spectator"} />}
-          />
+          <Route path="/" element={<Navigate replace to="/game" />} />
           <Route path="/game">
             <Route index element={<Dashboard />} />
             <Route path=":gameid" element={<Dashboard />} />

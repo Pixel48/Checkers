@@ -1,21 +1,55 @@
 import { Link } from "react-router-dom";
-import Signer from "./Signer";
+import { UserAuth } from "../../context/AuthContext";
 
-const Navbar = (props) => {
-  const user = props.user;
+const Navbar = () => {
+  const { user, login, logout } = UserAuth();
+  const photoURL = user
+    ? user.photoURL
+    : "https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg";
 
   return (
-    <nav className="nav-wrapper grey darken-3">
+    <nav className="nav-wrapper grey darken-3" id="navbar">
       <div className="container">
-        <Link to="/" className="brand-logo">
+        <Link
+          to="/"
+          className="brand-logo"
+          style={{
+            //   outline: "1px solid white",
+            borderRadius: "15px",
+            padding: "-15px 15px",
+            margin: "0 5px",
+            //   display: "block",
+          }}>
           Warcabista
         </Link>
 
-        <ul className="right">
-          <li>
-            <Signer user={user} className="right btn btn-floating z-depth-0" />
-          </li>
-        </ul>
+        <Link
+          className="right z-depth-0"
+          style={{
+            backgroundImage: `url(${photoURL})`,
+            borderRadius: "50%",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            width: "50px",
+            height: "50px",
+            margin: "5px",
+          }}
+          to={user ? `/user/${user?.uid}` : "#"}
+          onClick={() => {
+            user ? console.log("numb button") : login();
+          }}></Link>
+        <button
+          className="right"
+          onClick={() => logout()}
+          style={{
+            display: user ? "block" : "none",
+            height: "50px",
+            margin: "5px",
+            backgroundColor: "darkred",
+            borderRadius: "15px",
+          }}>
+          Sign Out
+        </button>
       </div>
     </nav>
   );
