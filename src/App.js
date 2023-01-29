@@ -3,11 +3,8 @@ import Navbar from "./components/Navbar";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-import Redirect from "./components/Redirect";
 import Profile from "./pages/Profile";
-
 import "./App.css";
-import Spectator from "./Spectator";
 
 function App() {
   const [user] = useAuthState(auth);
@@ -23,12 +20,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path=":gameid" element={<Dashboard />} />
           </Route>
-          <Route path="/spectator">
-            <Route index element={<Spectator />} />
-            <Route path=":gameid" element={<Spectator />} />
-          </Route>
           <Route path="/user">
-            {/* <Route index element={<Profile />} /> */}
             <Route
               index
               element={

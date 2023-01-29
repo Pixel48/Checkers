@@ -1,4 +1,8 @@
+import { useParams } from "react-router-dom";
+
 const Board = ({ spectator }) => {
+  const { gameid } = useParams();
+
   return (
     <div
       id="board"
@@ -11,6 +15,7 @@ const Board = ({ spectator }) => {
       }}>
       <h1>Board</h1>
       {spectator && <h2>Spectator</h2>}
+      {gameid && <h5>{gameid}</h5>}
     </div>
   );
 };
