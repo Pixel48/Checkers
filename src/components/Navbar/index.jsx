@@ -37,7 +37,8 @@ const Navbar = () => {
           to={user ? `/user/${user?.uid}` : "#"}
           onClick={() => {
             user ? console.log("numb button") : login();
-          }}></Link>
+          }}
+        />
         <button
           className="right"
           onClick={() => logout()}
