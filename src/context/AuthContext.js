@@ -36,7 +36,6 @@ export const AuthContext = ({ children }) => {
         setDoc(userRef, {
           uid: user.uid,
           displayName: user.displayName,
-          email: user.email,
           photoURL: user.photoURL,
           createdAt: serverTimestamp(),
           seenAt: serverTimestamp(),

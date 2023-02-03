@@ -61,6 +61,7 @@ const Chat = () => {
         <input
           type="text"
           value={formValue}
+          id="chat-input"
           placeholder="Say something nice"
           onChange={(e) => setFormValue(e.target.value)}
         />

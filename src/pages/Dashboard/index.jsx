@@ -20,75 +20,45 @@ import GameFinder from "./GameFinder";
 import Gamer from "./Gamer";
 import Spectator from "./Spectator";
 
-const Dashboard = (props) => {
+const Dashboard = ({ spectator }) => {
   const { user } = UserAuth();
   const { gameid } = useParams();
   const navigate = useNavigate();
-  const [userInGame, setUserInGame] = useState(false);
-  const [gameHasOpponent, setGameHasOpponent] = useState(false);
 
-  const isUserInGame = async () => {
-    const gameDoc = await getDoc(doc(db, "games", gameid));
-    if (!gameDoc.exists()) return false;
-    const gameData = gameDoc.data();
-    if (gameData.creator == user.uid || gameData.opponent == user.uid)
-      return true;
-    return false;
-  };
-
-  const doGameHaveOpponent = async () => {
-    const gameDoc = await getDoc(doc(db, "games", gameid));
-    if (!gameDoc.exists()) return false;
-    const gameData = gameDoc.data();
-    if (gameData.opponent) return true;
-    return false;
-  };
-
-  const joinGame = async () => {
-    const gameDoc = await getDoc(doc(db, "games", gameid));
-    if (!gameDoc.exists()) {
-      console.error("Game does not exist");
-      navigate("/");
-      return;
-    }
-    const gameData = gameDoc.data();
-    if (gameData.opponent) {
-      console.error("Game already has opponent");
-      navigate("/game");
-      return;
-    }
-
-    updateDoc(gameDoc.ref, { opponent: user.uid }).then(() =>
-      navigate(`/game/${gameid}`)
-    );
-  };
-
-  useEffect(() => {
-    if (!gameid) return;
-    doGameHaveOpponent().then((res) => setGameHasOpponent(res));
-    if (!user) return;
-    isUserInGame().then((res) => setUserInGame(res));
-  });
+  useEffect(() => {});
 
   return (
     <div className="row" style={{ margin: "1em 0" }}>
-      {!user ? (
-        !gameid ? (
-          <Spectator />
-        ) : (
-          navigate("/game")
-        )
-      ) : !gameid ? (
-        <GameFinder />
-      ) : gameHasOpponent ? (
-        userInGame ? (
+      {user && !spectator ? ( // User logged in
+        gameid ? ( // game selected
           <Gamer />
         ) : (
-          <Spectator />
+          // game not selected
+          <GameFinder />
         )
       ) : (
-        joinGame()
+        // User logged out
+        <Spectator />
       )}
+      {/* {user ? ( // User logged in
+        gameid ? (
+          userInGame ? ( // User is in game
+            <Gamer />
+          ) : // User is not in game
+          gameHasOpponent ? ( // Game already has opponent
+            <Spectator />
+          ) : (
+            // Game does not have opponent
+            <Gamer joinGame />
+          )
+        ) : (
+          // No gameid
+          <GameFinder />
+        )
+      ) : (
+        // User logged out
+        <Spectator />
+      )} */}
     </div>
   );
 };

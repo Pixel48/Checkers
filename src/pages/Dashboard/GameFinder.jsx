@@ -2,6 +2,8 @@ import {
   addDoc,
   collection,
   getDocs,
+  doc,
+  arrayUnion,
   limit,
   orderBy,
   query,
@@ -13,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import Board from "../../components/Board";
 import { UserAuth } from "../../context/AuthContext";
 import { db } from "../../firebase";
+import BBoard from "./BBoard";
 
 const GameFinder = () => {
   const { user } = UserAuth();
@@ -30,6 +33,7 @@ const GameFinder = () => {
       ongoing: true, // if false, game is over (turn indicates winner (0 - opponent, 1 - creator))
     });
     console.log(myNewGame.id);
+    updateDoc(doc(db, "users", user.uid), { games: arrayUnion(myNewGame.id) });
     navigate(`/game/${myNewGame.id}`);
   };
 
@@ -37,8 +41,9 @@ const GameFinder = () => {
     console.log(`Finding game for ${user.displayName}...`);
     const waitingGamesQuery = query(
       collection(db, "games"),
-      where("opponent", "==", null),
+      where("ongoing", "==", true),
       where("creator", "!=", user.uid),
+      where("opponent", "==", null),
       orderBy("creator"),
       orderBy("createdAt")
     );
@@ -50,6 +55,7 @@ const GameFinder = () => {
       const gameID = game.id;
       console.log(`Found game ${gameID}`);
       updateDoc(game.ref, { opponent: user.uid });
+      updateDoc(doc(db, "users", user.uid), { games: arrayUnion(gameID) });
       navigate(`/game/${gameID}`);
     } else {
       console.log("No waiting games found");
@@ -59,13 +65,12 @@ const GameFinder = () => {
 
   const checkOngoing = async () => {
     if (!user) return;
-    console.log(`Checking for ${user.displayName}'s ongoing games...`);
+    console.log(`Checking for ${user.displayName}'s created games...`);
     const createdGamesQuery = query(
       collection(db, "games"),
       where("creator", "==", user.uid),
       where("ongoing", "==", true),
-
-      // orderBy("createdAt"),
+      orderBy("createdAt"),
       limit(1)
     );
     const createdGames = await getDocs(createdGamesQuery);
@@ -81,14 +86,14 @@ const GameFinder = () => {
       collection(db, "games"),
       where("opponent", "==", user.uid),
       where("ongoing", "==", true),
-      // orderBy("createdAt"),
+      orderBy("createdAt"),
       limit(1)
     );
     const opponentGames = await getDocs(opponentGamesQuery);
     if (opponentGames.size > 0) {
       const game = opponentGames.docs[0];
       const gameID = game.id;
-      console.log(`Found ongoing game ${gameID} as opponent`);
+      console.log(`Found ongoing game ${gameID}`);
       navigate(`/game/${gameID}`);
       return;
     } else console.log("No opponent games found");
@@ -97,9 +102,7 @@ const GameFinder = () => {
 
   return (
     <>
-      <div className="col-6 left">
-        <Board />
-      </div>
+      <div className="col-6 left">{<BBoard spectator />}</div>
       <div className="col-6 right">
         <button onClick={checkOngoing}>Find Game</button>
       </div>

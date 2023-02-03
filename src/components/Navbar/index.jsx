@@ -26,10 +26,10 @@ const Navbar = () => {
         <Link
           className="right z-depth-0"
           style={{
-            backgroundImage: `url(${photoURL})`,
-            borderRadius: "50%",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            //   backgroundImage: `url(${photoURL})`,
+            //   borderRadius: "50%",
+            //   backgroundSize: "cover",
+            //   backgroundPosition: "center",
             width: "50px",
             height: "50px",
             margin: "5px",
@@ -37,8 +37,17 @@ const Navbar = () => {
           to={user ? `/user/${user?.uid}` : "#"}
           onClick={() => {
             user ? console.log("numb button") : login();
-          }}
-        />
+          }}>
+          <img
+            src={photoURL}
+            alt=""
+            referrerPolicy="no-referrer"
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+          />
+        </Link>
         <button
           className="right"
           onClick={() => logout()}

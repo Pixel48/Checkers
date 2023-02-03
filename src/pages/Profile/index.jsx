@@ -9,9 +9,7 @@ const Profile = () => {
   const { userid } = useParams();
 
   const userRef = doc(db, "users", userid);
-  console.log({ userRef });
   const [userDoc, loading, error] = useDocumentData(userRef);
-  console.log({ userDoc });
 
   return loading ? (
     <div className="row" style={{ margin: "1em 0" }}>

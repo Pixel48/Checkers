@@ -1,18 +1,62 @@
+import { doc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { Link, useParams } from "react-router-dom";
+import { UserAuth } from "../../../context/AuthContext";
+import { db } from "../../../firebase";
+
 const User = () => {
+  const { user } = UserAuth();
+  const { gameid } = useParams();
+  const gameQuery = doc(db, "games", gameid);
+  const getOpponentData = async (opponentUID) => {
+    const opponentDoc = doc(db, "users", opponentUID);
+    const opponentData = await getDoc(opponentDoc);
+    return opponentData.data();
+  };
+
+  const [gameData, loading, error] = useDocumentData(gameQuery);
+  const [opponentData, setOpponentData] = useState(null);
+
+  useEffect(() => {
+    if (gameData) {
+      const opponentUID =
+        gameData.creator === user.uid ? gameData.opponent : gameData.creator;
+      getOpponentData(opponentUID).then((opponentData) => {
+        setOpponentData(opponentData);
+      });
+    }
+  }, [gameData]);
+
   return (
-    <div className="person">
-      <span
-        className="profile-pic"
+    <Link
+      className="person"
+      to={`/user/${opponentData?.uid}`}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-around",
+        aspectRatio: "1:1",
+        width: "100%",
+      }}>
+      <img
+        src={opponentData && opponentData.photoURL}
+        alt=""
         style={{
-          backgroundColor: "blue",
-          aspectRatio: "1:1",
+          width: "30%",
+          height: "30%",
+          display: opponentData ? "inline-block" : "none",
+        }}
+      />
+      <p
+        style={{
           display: "inline-block",
-          width: "7vw",
-          height: "7vw",
-          borderRadius: "50%",
-        }}></span>
-      <h1 style={{ display: "inline" }}>Social</h1>
-    </div>
+          fontSize: "250%",
+          margin: 0,
+        }}>
+        {opponentData ? opponentData.displayName : "Waiting..."}
+      </p>
+    </Link>
   );
 };
 

@@ -29,6 +29,10 @@ function App() {
             />
             <Route path=":userid" element={<Profile />} />
           </Route>
+          <Route path="/spectator">
+            <Route path=":gameid" element={<Dashboard spectator />} />
+            <Route index element={<Navigate replace to="/game" />} />
+          </Route>
         </Routes>
       </main>
     </>

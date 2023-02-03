@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { UserAuth } from "../../../../context/AuthContext";
 
 const Message = (props) => {
@@ -8,7 +9,9 @@ const Message = (props) => {
 
   return (
     <div className={`message ${messageClass}`}>
-      <img src={photoURL} alt="" referrerPolicy="no-referrer" />
+      <Link to={`/user/${uid}`}>
+        <img src={photoURL} alt="" referrerPolicy="no-referrer" />
+      </Link>
       <p>{text}</p>
     </div>
   );
