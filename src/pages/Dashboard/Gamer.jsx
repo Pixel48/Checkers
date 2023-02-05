@@ -45,10 +45,10 @@ const Gamer = () => {
       <div className="col-6 left">
         {userPlaying && gameData.ongoing ? (
           <Board />
-        ) : gameJoinable ? (
+        ) : gameJoinable && gameData.ongoing ? (
           <Board spectator joinable />
         ) : (
-          <Navigate replace to={`/spectator/${gameid}`} />
+          <Board spectator />
         )}
       </div>
       <div className="col-6 right">

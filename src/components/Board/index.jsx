@@ -1,6 +1,8 @@
 import { logDOM } from "@testing-library/react";
 import {
+  arrayRemove,
   arrayUnion,
+  deleteDoc,
   doc,
   FieldValue,
   getDoc,
@@ -32,7 +34,7 @@ const Board = ({ spectator, joinable, baseboard }) => {
           width: "30vw",
           height: "30vw",
         }}>
-        <h1>Board</h1>
+        <h1 style={{ margin: "0" }}>Board</h1>
         {spectator && <h2>Spectator</h2>}
         {gameid && <h5>{gameid}</h5>}
       </div>
@@ -52,29 +54,45 @@ const Board = ({ spectator, joinable, baseboard }) => {
             Join Game
           </button>
         ) : gameid && !spectator ? (
-          <button
-            id="surrender"
-            className="btn btn-danger red"
-            onClick={() => {
-              console.log(
-                `Surrendering game ${gameid} as ${user.displayName}...`
-              );
-              updateDoc(gameQuery, {
-                ongoing: false,
-                turn: gameData.creator === user.uid ? 0 : 1,
-              });
-              doc(db, "users", user.uid).update("lose", increment);
-              doc(
-                db,
-                "users",
-                gameData.creator === user.uid
-                  ? gameData.opponent
-                  : gameData.creator
-              ).update("win", increment);
-              navigate("/game");
-            }}>
-            Surrender
-          </button>
+          gameData.opponent ? (
+            <button
+              id="surrender"
+              className="btn btn-danger red"
+              onClick={() => {
+                console.log(
+                  `Surrendering game ${gameid} as ${user.displayName}...`
+                );
+                updateDoc(gameQuery, {
+                  ongoing: false,
+                  turn: gameData.creator === user.uid ? 0 : 1,
+                });
+                doc(db, "users", user.uid).update("lose", increment);
+                doc(
+                  db,
+                  "users",
+                  gameData.creator === user.uid
+                    ? gameData.opponent
+                    : gameData.creator
+                ).update("win", increment);
+                navigate("/game");
+              }}>
+              Surrender
+            </button>
+          ) : (
+            <button
+              id="abort"
+              className="btn btn-danger red"
+              onClick={() => {
+                console.log(
+                  `Aborting game ${gameid} as ${user.displayName}...`
+                );
+                deleteDoc(gameQuery);
+                doc(db, "users", user.uid).update("games", arrayRemove(gameid));
+                navigate("/game");
+              }}>
+              Abort
+            </button>
+          )
         ) : (
           !gameData.ongoing && (
             <p>

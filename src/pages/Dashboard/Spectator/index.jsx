@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
-import Board from "../../components/Board";
-import BBoard from "./BBoard";
+import Board from "../../../components/Board";
+import BBoard from "../BBoard";
+import GameList from "./GameList";
 
 const Spectator = () => {
   const { gameid } = useParams();
@@ -8,7 +9,7 @@ const Spectator = () => {
   return (
     <>
       <div className="col-6 left">
-        <h1>{"<GameList />"}</h1>
+        <GameList />
       </div>
       <div className="col-6 right">
         {gameid ? <Board spectator /> : <BBoard />}

@@ -10,8 +10,11 @@ import {
   serverTimestamp,
   updateDoc,
   where,
+  onSnapshot,
 } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { Link, useNavigate } from "react-router-dom";
 import Board from "../../components/Board";
 import { UserAuth } from "../../context/AuthContext";
 import { db } from "../../firebase";
@@ -20,6 +23,28 @@ import BBoard from "./BBoard";
 const GameFinder = () => {
   const { user } = UserAuth();
   const navigate = useNavigate();
+
+  const openGamesQuery = query(
+    collection(db, "games"),
+    where("ongoing", "==", true),
+    where("opponent", "==", null)
+  );
+
+  const [openGames, setOpenGames] = useState([]);
+
+  useEffect(() => {
+    const unsubOpenGames = onSnapshot(openGamesQuery, (openGamesSnapshot) => {
+      setOpenGames(
+        openGamesSnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    });
+    return () => {
+      unsubOpenGames();
+    };
+  }, []);
+
+  const usersQuery = query(collection(db, "users"));
+  const [users, usersLoading, usersError] = useCollectionData(usersQuery);
 
   const createGame = async () => {
     console.log(`Creating game for ${user.displayName}...`);
@@ -103,8 +128,19 @@ const GameFinder = () => {
   return (
     <>
       <div className="col-6 left">{<BBoard spectator />}</div>
-      <div className="col-6 right">
+      <div className="col-6 center">
         <button onClick={checkOngoing}>Find Game</button>
+        <ul>
+          {openGames.map((game) => (
+            <li key={game.id}>
+              <Link onClick={() => navigate(`/game/${game.id}`)}>
+                {`Join game against ${
+                  users.find((user) => user.uid === game.creator)?.displayName
+                }`}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );

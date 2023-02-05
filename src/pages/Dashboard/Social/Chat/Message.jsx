@@ -6,13 +6,19 @@ const Message = (props) => {
 
   const { user } = UserAuth();
   const messageClass = uid === user.uid ? "sent" : "received";
+  const messageAlign = uid === user.uid ? "right" : "left";
 
   return (
-    <div className={`message ${messageClass}`}>
+    <div className={`message ${messageClass} ${messageAlign}`}>
       <Link to={`/user/${uid}`}>
         <img src={photoURL} alt="" referrerPolicy="no-referrer" />
       </Link>
-      <p>{text}</p>
+      <p
+        style={{
+          textAlign: messageAlign,
+        }}>
+        {text}
+      </p>
     </div>
   );
 };

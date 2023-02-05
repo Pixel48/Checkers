@@ -4,12 +4,18 @@ const BBoard = () => {
       <div
         id="board"
         style={{
-          backgroundColor: "white",
+          backgroundColor: "cyan",
           aspectRatio: "1:1",
           width: "30vw",
           height: "30vw",
         }}>
-        <h1>Board</h1>
+        <h1
+          style={{
+            margin: "0",
+          }}>
+          BBoard
+        </h1>
+        <h5>Base Boards</h5>
       </div>
     </div>
   );
