@@ -15,7 +15,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import { db } from "../../firebase";
 
-const Board = ({ spectator, joinable, baseboard }) => {
+const Board = ({ spectator, joinable }) => {
   const navigate = useNavigate();
   const { gameid } = useParams();
   const { user } = UserAuth();
@@ -38,68 +38,66 @@ const Board = ({ spectator, joinable, baseboard }) => {
         {spectator && <h2>Spectator</h2>}
         {gameid && <h5>{gameid}</h5>}
       </div>
-      {!baseboard &&
-        (joinable ? (
+
+      {joinable ? (
+        <button
+          id="join"
+          onClick={() => {
+            console.log(`Joining game ${gameid} as ${user.displayName}...`);
+            updateDoc(gameQuery, { opponent: user.uid });
+            updateDoc(doc(db, "users", user.uid), {
+              games: arrayUnion(gameid),
+            });
+            navigate(`/game/${gameid}`);
+          }}
+          className="btn btn-primary">
+          Join Game
+        </button>
+      ) : gameid && !spectator ? (
+        gameData.opponent ? (
           <button
-            id="join"
+            id="surrender"
+            className="btn btn-danger red"
             onClick={() => {
-              console.log(`Joining game ${gameid} as ${user.displayName}...`);
-              updateDoc(gameQuery, { opponent: user.uid });
-              updateDoc(doc(db, "users", user.uid), {
-                games: arrayUnion(gameid),
+              console.log(
+                `Surrendering game ${gameid} as ${user.displayName}...`
+              );
+              updateDoc(gameQuery, {
+                ongoing: false,
+                turn: gameData.creator === user.uid ? 0 : 1,
               });
-              navigate(`/game/${gameid}`);
-            }}
-            className="btn btn-primary">
-            Join Game
+              doc(db, "users", user.uid).update("lose", increment);
+              doc(
+                db,
+                "users",
+                gameData.creator === user.uid
+                  ? gameData.opponent
+                  : gameData.creator
+              ).update("win", increment);
+              navigate("/game");
+            }}>
+            Surrender
           </button>
-        ) : gameid && !spectator ? (
-          gameData.opponent ? (
-            <button
-              id="surrender"
-              className="btn btn-danger red"
-              onClick={() => {
-                console.log(
-                  `Surrendering game ${gameid} as ${user.displayName}...`
-                );
-                updateDoc(gameQuery, {
-                  ongoing: false,
-                  turn: gameData.creator === user.uid ? 0 : 1,
-                });
-                doc(db, "users", user.uid).update("lose", increment);
-                doc(
-                  db,
-                  "users",
-                  gameData.creator === user.uid
-                    ? gameData.opponent
-                    : gameData.creator
-                ).update("win", increment);
-                navigate("/game");
-              }}>
-              Surrender
-            </button>
-          ) : (
-            <button
-              id="abort"
-              className="btn btn-danger red"
-              onClick={() => {
-                console.log(
-                  `Aborting game ${gameid} as ${user.displayName}...`
-                );
-                deleteDoc(gameQuery);
-                doc(db, "users", user.uid).update("games", arrayRemove(gameid));
-                navigate("/game");
-              }}>
-              Abort
-            </button>
-          )
         ) : (
-          !gameData.ongoing && (
-            <p>
-              {`${gameData.turn ? gameData.creator : gameData.opponent} won!`}
-            </p>
-          )
-        ))}
+          <button
+            id="abort"
+            className="btn btn-danger red"
+            onClick={() => {
+              console.log(`Aborting game ${gameid} as ${user.displayName}...`);
+              deleteDoc(gameQuery);
+              doc(db, "users", user.uid).update("games", arrayRemove(gameid));
+              navigate("/game");
+            }}>
+            Abort
+          </button>
+        )
+      ) : (
+        !gameData.ongoing && (
+          <p>
+            {`${gameData.turn ? gameData.creator : gameData.opponent} won!`}
+          </p>
+        )
+      )}
     </>
   );
 };

@@ -1,7 +1,7 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import Board from "../../components/Board";
+import Board from "../../components/Board/Board";
 import { UserAuth } from "../../context/AuthContext";
 import Social from "./Social";
 import { db } from "../../firebase";

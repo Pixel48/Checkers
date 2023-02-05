@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Link, useNavigate } from "react-router-dom";
-import Board from "../../components/Board";
+import Board from "../../components/Board/Board";
 import { UserAuth } from "../../context/AuthContext";
 import { db } from "../../firebase";
 import BBoard from "./BBoard";
