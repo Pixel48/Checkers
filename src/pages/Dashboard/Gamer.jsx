@@ -42,7 +42,7 @@ const Gamer = () => {
         <Board />
         {gameData.opponent ? <SurrenderButton /> : <AbortButton />}
       </div>
-      <div className="col-6-right">
+      <div className="col-6 right">
         <Social />
       </div>
     </>
