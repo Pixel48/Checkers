@@ -1,20 +1,6 @@
-import { ErrorFactory } from "@firebase/util";
-import {
-  addDoc,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  limit,
-  orderBy,
-  query,
-  serverTimestamp,
-  updateDoc,
-  where,
-} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { UserAuth } from "../../context/AuthContext";
+import { UserAuth } from "../../contexts/AuthContext";
 import { db } from "../../firebase";
 import GameFinder from "./GameFinder";
 import Gamer from "./Gamer";
@@ -25,15 +11,17 @@ const Dashboard = ({ spectator }) => {
   const { gameid } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() => {});
+  const [gameData, setGameData] = useState(null);
 
   return (
     <div className="row" style={{ margin: "1em 0" }}>
-      {user && !spectator ? ( // User logged in
-        gameid ? ( // game selected
+      {spectator ? <Spectator /> : gameid ? <Gamer /> : <GameFinder />}
+      {/* {spectator ? (
+        <Spectator />
+      ) : user ? (
+        gameid ? (
           <Gamer />
         ) : (
-          // game not selected
           <GameFinder />
         )
       ) : (

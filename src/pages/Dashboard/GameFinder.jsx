@@ -1,22 +1,24 @@
 import {
   addDoc,
-  collection,
-  getDocs,
-  doc,
   arrayUnion,
+  collection,
+  doc,
+  getDocs,
   limit,
+  onSnapshot,
   orderBy,
   query,
   serverTimestamp,
   updateDoc,
   where,
-  onSnapshot,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 import { Link, useNavigate } from "react-router-dom";
-import Board from "../../components/Board";
-import { UserAuth } from "../../context/AuthContext";
+import { UserAuth } from "../../contexts/AuthContext";
 import { db } from "../../firebase";
 import BBoard from "./BBoard";
 
@@ -27,7 +29,8 @@ const GameFinder = () => {
   const openGamesQuery = query(
     collection(db, "games"),
     where("ongoing", "==", true),
-    where("opponent", "==", null)
+    where("opponent", "==", null),
+    where("creator", "!=", user.uid)
   );
 
   const [openGames, setOpenGames] = useState([]);
@@ -49,7 +52,6 @@ const GameFinder = () => {
   const createGame = async () => {
     console.log(`Creating game for ${user.displayName}...`);
     const myNewGame = await addDoc(collection(db, "games"), {
-      // players: [null, user.uid], // first is always opponent, plays as white
       creator: user.uid, // creator plays as black
       opponent: null, // if null, game is waiting for opponent
       turn: 0, // 0 - opponent, 1 - creator (used as winner if game ends)
@@ -130,10 +132,10 @@ const GameFinder = () => {
       <div className="col-6 left">{<BBoard spectator />}</div>
       <div className="col-6 center">
         <button onClick={checkOngoing}>Find Game</button>
-        <ul>
+        <ul id="join-list">
           {openGames.map((game) => (
             <li key={game.id}>
-              <Link onClick={() => navigate(`/game/${game.id}`)}>
+              <Link to={`/game/${game.id}`}>
                 {`Join game against ${
                   users.find((user) => user.uid === game.creator)?.displayName
                 }`}
