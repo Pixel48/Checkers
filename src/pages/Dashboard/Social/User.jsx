@@ -2,7 +2,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { Link, useParams } from "react-router-dom";
-import { UserAuth } from "../../../context/AuthContext";
+import { UserAuth } from "../../../contexts/AuthContext";
 import { db } from "../../../firebase";
 
 const User = () => {
@@ -43,8 +43,8 @@ const User = () => {
         src={opponentData && opponentData.photoURL}
         alt=""
         style={{
-          width: "30%",
-          height: "30%",
+          width: "25a%",
+          height: "25a%",
           display: opponentData ? "inline-block" : "none",
         }}
       />
@@ -52,6 +52,7 @@ const User = () => {
         style={{
           display: "inline-block",
           fontSize: "250%",
+          overflowWrap: "break-word",
           margin: 0,
         }}>
         {opponentData ? opponentData.displayName : "Waiting..."}

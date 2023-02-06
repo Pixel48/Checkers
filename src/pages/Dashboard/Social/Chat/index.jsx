@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { useRef, useState } from "react";
 import Message from "./Message";
-import { UserAuth } from "../../../../context/AuthContext";
+import { UserAuth } from "../../../../contexts/AuthContext";
 import { useParams } from "react-router-dom";
 
 const Chat = () => {
@@ -52,7 +52,13 @@ const Chat = () => {
 
   return (
     <>
-      <div className="chat">
+      <div
+        className="chat"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          maxWidth: "100%",
+        }}>
         {messages &&
           messages.map((msg) => <Message key={msg.id} message={msg} />)}
         <div ref={dummy}></div>

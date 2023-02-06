@@ -1,8 +1,8 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import Board from "../../components/Board/Board";
-import { UserAuth } from "../../context/AuthContext";
+import Board from "../../components/Board";
+import { UserAuth } from "../../contexts/AuthContext";
 import Social from "./Social";
 import { db } from "../../firebase";
 import {
@@ -10,46 +10,37 @@ import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
+import {
+  AbortButton,
+  JoinButton,
+  SurrenderButton,
+} from "../../components/Board/Buttons";
 
 const Gamer = () => {
   const navigate = useNavigate();
   const { user } = UserAuth();
-  const { gameid, joinGame } = useParams();
+  const { gameid } = useParams();
   const gameQuery = doc(db, "games", gameid);
-  // const [gameDoc, gameLoading, gameError] = useCollectionData(gameQuery);
   const [gameData, gameLoading, gameError] = useDocumentData(gameQuery);
 
-  const [userPlaying, setUserPlaying] = useState(false);
-  const [gameJoinable, setGameJoinable] = useState(false);
-
   useEffect(() => {
-    if (gameLoading) return;
-    if (gameError) {
-      console.error(gameError);
-      navigate("/game");
-      return;
-    }
-    setUserPlaying(
-      gameData.creator === user.uid || gameData.opponent === user.uid
-    );
-    if (!userPlaying)
-      setGameJoinable(
-        gameData.opponent === null &&
-          gameData.ongoing &&
-          gameData.creator !== user.uid
-      );
-  }, [user.uid, gameData]);
+    if (!user || gameLoading) return; // Don't do shit if still waiting for data
+    const { creator, opponent, ongoing } = gameData;
+    const { displayName, uid } = user;
+    console.table({ creator, opponent, ongoing, displayName, uid });
+    if ((creator !== uid && opponent !== uid) || !ongoing)
+      navigate(`/spectator/${gameid}`); // If user is not playing, redirect to spectator
+  }, [user, gameData]);
 
-  return (
+  return gameLoading ? (
+    <h1>Loading...</h1>
+  ) : gameError ? (
+    <h1 className="">Error: {gameError.message}</h1>
+  ) : (
     <>
       <div className="col-6 left">
-        {userPlaying && gameData.ongoing ? (
-          <Board />
-        ) : gameJoinable && gameData.ongoing ? (
-          <Board spectator joinable />
-        ) : (
-          <Board spectator />
-        )}
+        <Board />
+        {gameData.opponent ? <SurrenderButton /> : <AbortButton />}
       </div>
       <div className="col-6 right">
         <Social />

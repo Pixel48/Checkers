@@ -1,8 +1,9 @@
 import { doc, getDoc } from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useParams } from "react-router-dom";
-import { UserAuth } from "../../context/AuthContext";
+import { UserAuth } from "../../contexts/AuthContext";
 import { db } from "../../firebase";
+import UserGames from "./UserGames";
 
 const Profile = () => {
   const { user } = UserAuth();
@@ -40,7 +41,8 @@ const Profile = () => {
         <p>uid: {userDoc.uid}</p>
         <p>joined at {userDoc.createdAt.toDate().toString()}</p>
         <p>last seen at {userDoc.seenAt.toDate().toString()}</p>
-        <p>W / L / D: {`${userDoc.win} / ${userDoc.lose} / ${userDoc.draw}`}</p>
+        <p>W / L : {`${userDoc.win} / ${userDoc.lose}`}</p>
+        <UserGames />
       </div>
     </div>
   );

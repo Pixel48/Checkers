@@ -15,7 +15,7 @@ import {
 } from "@firebase/firestore";
 import { useEffect } from "react";
 
-const UserContext = createContext();
+export const UserContext = createContext();
 
 export const AuthContext = ({ children }) => {
   const [user, setUser] = useState(auth.currentUser);
@@ -41,7 +41,6 @@ export const AuthContext = ({ children }) => {
           seenAt: serverTimestamp(),
           win: 0,
           lose: 0,
-          draw: 0,
           games: [],
         });
       } else {
