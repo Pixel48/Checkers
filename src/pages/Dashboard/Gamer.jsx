@@ -50,11 +50,14 @@ const Gamer = () => {
             fontFamily: 'monoscape, "Courier New", Courier, monospace',
             color: "white",
             backgroundColor: "black",
+            marginTop: "2em",
+            overflowWrap: "anywhere",
+            fontSize: ".9em",
+            // padding: "1em",
             // padding: "1rem",
           }}
           dangerouslySetInnerHTML={{
-            __html: `
-.square0 {
+            __html: `.square0 {
   background-color: rgba(130, 130, 130, 0.999);
 }
 .square1 {
@@ -65,8 +68,7 @@ const Gamer = () => {
 }
 .circleP2 {
   background-color: green;
-}
-              `,
+}`,
           }}
         />
       </div>
