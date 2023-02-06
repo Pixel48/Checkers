@@ -41,6 +41,34 @@ const Gamer = () => {
       <div className="col-6 left">
         <Board />
         {gameData.opponent ? <SurrenderButton /> : <AbortButton />}
+        <style
+          contentEditable
+          style={{
+            display: "block",
+            whiteSpace: "pre",
+            border: "1px solid white",
+            fontFamily: 'monoscape, "Courier New", Courier, monospace',
+            color: "white",
+            backgroundColor: "black",
+            // padding: "1rem",
+          }}
+          dangerouslySetInnerHTML={{
+            __html: `
+.square0 {
+  background-color: rgba(130, 130, 130, 0.999);
+}
+.square1 {
+  background-color: black;
+}
+.circleP1 {
+  background-color: blue;
+}
+.circleP2 {
+  background-color: green;
+}
+              `,
+          }}
+        />
       </div>
       <div className="col-6 right">
         <Social />

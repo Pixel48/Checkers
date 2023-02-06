@@ -105,18 +105,18 @@ const Board = ({ joinable, spectator }) => {
             {row.map((col, j) => (
               <td key={j} style={{ padding: 0, border: "none" }}>
                 {col === 0 ? (
-                  <div className="square0" />
+                  <div className="square square0" />
                 ) : (
-                  <div className="square1" />
+                  <div className="square square1" />
                 )}
                 {col === 1 && (i === 7 || i === 6 || i === 5) ? (
                   <div onClick={() => handleClick(i, j)}>
-                    <div className="circleP1" />
+                    <div className="circle circleP1" />
                   </div>
                 ) : null}
                 {col === 2 && (i === 1 || i === 0 || i === 2) ? (
                   <div onClick={() => handleClick(i, j)}>
-                    <div className="circleP2" />
+                    <div className="circle circleP2" />
                   </div>
                 ) : null}
               </td>
