@@ -1,7 +1,7 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import Board from "../../components/Board";
+import  Board  from "../../components/Board";
 import { UserAuth } from "../../context/AuthContext";
 import Social from "./Social";
 import { db } from "../../firebase";
@@ -10,6 +10,7 @@ import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
+import "../../components/Board"
 
 const Gamer = () => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ const Gamer = () => {
 
   return (
     <>
-      <div className="col-6 left">
+      <div className="col-6-left" style={{ position: 'relative', top: 0, left: 0 }}>
         {userPlaying && gameData.ongoing ? (
           <Board />
         ) : gameJoinable && gameData.ongoing ? (
@@ -51,7 +52,7 @@ const Gamer = () => {
           <Board spectator />
         )}
       </div>
-      <div className="col-6 right">
+      <div className="col-6-right">
         <Social />
       </div>
     </>

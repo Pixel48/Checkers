@@ -13,6 +13,7 @@ import Message from "./Message";
 import { UserAuth } from "../../../../context/AuthContext";
 import { useParams } from "react-router-dom";
 
+
 const Chat = () => {
   const { gameid } = useParams();
   const messagesRef = collection(db, `games/${gameid}/chat`);

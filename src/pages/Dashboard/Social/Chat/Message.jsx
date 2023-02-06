@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { UserAuth } from "../../../../context/AuthContext";
 
+
 const Message = (props) => {
   const { text, uid, photoURL } = props.message;
 

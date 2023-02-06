@@ -14,6 +14,8 @@ import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import { db } from "../../firebase";
+import React, { useState } from 'react';
+import "./index.css";
 
 const Board = ({ spectator, joinable, baseboard }) => {
   const navigate = useNavigate();
@@ -21,23 +23,50 @@ const Board = ({ spectator, joinable, baseboard }) => {
   const { user } = UserAuth();
   const gameQuery = doc(db, "games", gameid);
   const [gameData, gameLoading, gameError] = useDocumentData(gameQuery);
-
+    const [board, setBoard] = useState([    
+      [0, 2, 0, 2, 0, 2, 0, 2],
+      [2, 0, 2, 0, 2, 0, 2, 0],
+      [0, 2, 0, 2, 0, 2, 0, 2],
+      [-1, 0, -1, 0, -1, 0, -1, 0],
+      [0, -1, 0, -1, 0, -1, 0, -1],
+      [1, 0, 1, 0, 1, 0, 1, 0],
+      [0, 1, 0, 1, 0, 1, 0, 1],
+      [1, 0, 1, 0, 1, 0, 1, 0],
+    ]);
+/*  
+    const handleClick = (row, col) => {
+      const newBoard = [...board];
+      newBoard[row][col] = 3;
+      setBoard(newBoard);
+    };
+*/
   return gameLoading ? (
     <h1>Loading</h1>
   ) : (
     <>
-      <div
-        id="board"
-        style={{
-          backgroundColor: !spectator ? "white" : "gray",
-          aspectRatio: "1:1",
-          width: "30vw",
-          height: "30vw",
-        }}>
-        <h1 style={{ margin: "0" }}>Board</h1>
-        {spectator && <h2>Spectator</h2>}
-        {gameid && <h5>{gameid}</h5>}
-      </div>
+      <table>
+        {board.map((row, i) => (
+          <tr key={i}>
+            {row.map((col, j) => (
+              <td key={j} style ={{padding: 0, border: 'none'}}>
+                {col === 0 ? <div className="square0" /> : <div className="square1" />}
+                {(col === 1) && (i === 7 || i === 6 || i === 5) ? (
+                <div>
+                     <div className="circleP1" />
+                </div>
+                ) : null}
+                {(col === 2) && (i === 1 || i === 0 || i === 2 ) ? (
+                <div>
+                     <div className="circleP2" />
+                </div>
+                ) : null}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </table>
+    
+
       {!baseboard &&
         (joinable ? (
           <button
